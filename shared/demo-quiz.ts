@@ -4,6 +4,7 @@ export const demoQuiz: Quiz = {
 	quizId: 1,
 	description: 'boring demo ill make it exciting later',
 	title: 'Boring Demo Quiz',
+	showAnswers: true,
 	questions: [
 		{
 			questionId: 1,
