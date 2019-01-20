@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'normalize.css/normalize.css';
+
+:root {
+	--cta-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.8);
+	--cta-border-radius: 10px;
+
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 20px;
+}
+
+* {
+	box-sizing: border-box;
+}

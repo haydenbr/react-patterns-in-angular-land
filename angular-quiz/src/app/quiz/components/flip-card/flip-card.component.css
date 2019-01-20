@@ -1,0 +1,26 @@
+:host {
+	cursor: pointer;
+	display: block;
+	position: relative;
+	perspective: 500px;
+	perspective-origin: center;
+	height: 100%;
+}
+
+.card-face {
+	border-radius: var(--cta-border-radius);
+	box-shadow: var(--cta-box-shadow);
+	height: 100%;
+	overflow: hidden;
+	position: absolute;
+	width: 100%;
+	backface-visibility: hidden;
+}
+
+.card-face.front-face {
+	transform: rotate3d(1, 1, 1, 0deg);
+}
+
+.card-face.back-face {
+	transform: rotate3d(1, 0, 0, 180deg);
+}

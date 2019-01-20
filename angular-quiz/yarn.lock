@@ -317,6 +317,11 @@
     semver "5.5.1"
     semver-intersect "1.4.0"
 
+"@types/gsap@^1.20.0":
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/@types/gsap/-/gsap-1.20.0.tgz#131c3ce39d7e18c0278285ec58a1eb216936de59"
+  integrity sha512-kTIjuQWP5ot1kfX0lZ0lxc7VNTB7CDg9oMJPubS9UGM5e7uZ9rFj/0hvZoQjFk0u69T2pcOOsviA+vRhlV8SMA==
+
 "@types/jasmine@*":
   version "3.3.5"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.3.5.tgz#3738ffbf34dffae9ecaac4503d7d969744f0e1d7"
@@ -3056,6 +3061,11 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.15.tgz#ffb703e1066e8a0eeaa4c8b80ba9253eeefbfb00"
   integrity sha512-6uHUhOPEBgQ24HM+r6b/QwWfZq+yiFcipKFrOFiBEnWdy5sdzYoi+pJeQaPI5qOLRFqWmAXUPQNsielzdLoecA==
 
+gsap@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/gsap/-/gsap-2.0.2.tgz#c82bde9a078f7922869fc2eb5aaecfa7592d1c2b"
+  integrity sha512-WyT0uuDNb+5xMccx4SsVcI1CwvIL0BPgP8TyJJmMWT/btGXUNtKesnkXFMMshYs37renFhDo1P5NEoizeonviQ==
+
 handle-thing@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-2.0.0.tgz#0e039695ff50c93fc288557d696f3c1dc6776754"
@@ -4841,6 +4851,11 @@ normalize-range@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/normalize-range/-/normalize-range-0.1.2.tgz#2d10c06bdfd312ea9777695a4d28439456b75942"
   integrity sha1-LRDAa9/TEuqXd2laTShDlFa3WUI=
+
+normalize.css@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-8.0.1.tgz#9b98a208738b9cc2634caacbc42d131c97487bf3"
+  integrity sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==
 
 npm-bundled@^1.0.1:
   version "1.0.5"

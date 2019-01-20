@@ -19,7 +19,7 @@
       "dom"
 		],
 		"paths": {
-			"@quiz/*": ["src/*"],
+			"@quiz/*": ["src/app/*"],
 			"@shared/*": ["../shared/*"]
 		}
   }
