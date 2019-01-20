@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
 	styles: [`
 		:host {
 			display: block;
+			height: 100%;
 			padding: var(--flip-card-padding, 10px);
 		}
 	`]
