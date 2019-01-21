@@ -1,10 +1,11 @@
-import { Quiz, QuestionType } from './types';
+import { Quiz, QuestionType, LabelType } from './types';
 
 export const demoQuiz: Quiz = {
 	quizId: 1,
 	description: 'boring demo ill make it exciting later',
 	title: 'Boring Demo Quiz',
 	showAnswers: true,
+	labelType: LabelType.Alpha,
 	questions: [
 		{
 			questionId: 1,
