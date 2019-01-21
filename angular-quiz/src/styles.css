@@ -3,16 +3,34 @@
 :root {
 	--cta-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.8);
 	--cta-border-radius: 10px;
-	--default-color: #230e18;
+	--default-color: #3c3c3c;
 	--disabled-color: #b7a5ad;
 	--primary-color: #934c6c;
 	--danger-color: #e03c3f;
 	--success-color: #93e03c;
 
+	color: var(--default-color);
 	font-family: Arial, Helvetica, sans-serif;
 	padding: 20px;
 }
 
 * {
 	box-sizing: border-box;
+}
+
+button {
+	cursor: pointer;
+}
+
+button.button {
+	border-radius: var(--cta-border-radius);
+	border-width: 0;
+	box-shadow: var(--cta-box-shadow);
+	font-size: 18px;
+	padding: 5px 20px;
+}
+
+button.primary {
+	background-color: var(--primary-color);
+	color: white;
 }

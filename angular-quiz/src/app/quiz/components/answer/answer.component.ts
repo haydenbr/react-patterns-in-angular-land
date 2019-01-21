@@ -4,13 +4,15 @@ import { Subject } from 'rxjs';
 import { Answer, Question } from '@shared/types';
 
 @Component({
-	selector: 'cc-answer',
+	selector: 'answer',
 	styles: [`
 		:host {
+			align-items: center;
 			border: 2px solid var(--default-color);
 			border-radius: var(--cta-border-radius);
+			cursor: pointer;
 			display: flex;
-			justify-content: center;
+			padding: 20px 10px;
 		}
 	`],
 	template: `
@@ -18,7 +20,7 @@ import { Answer, Question } from '@shared/types';
 		<div class="answer-description">{{description}}</div>
 	`
 })
-export class CcAnswerComponent {
+export class AnswerComponent {
 	@Input() question: Question;
 	@Input() answer: Answer;
 

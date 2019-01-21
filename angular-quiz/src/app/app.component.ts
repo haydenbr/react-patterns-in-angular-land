@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { demoQuiz } from '@shared/demo-quiz';
 
 @Component({
 	selector: 'app-root',
@@ -9,6 +10,7 @@ import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 export class AppComponent implements OnInit {
 	formControl = new FormControl();
 	formGroup: FormGroup;
+	demoQuiz = demoQuiz;
 
 	constructor(fb: FormBuilder) {
 		this.formGroup = fb.group({
