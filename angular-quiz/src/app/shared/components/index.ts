@@ -6,6 +6,8 @@ import { FlipCardComponent } from './flip-card/flip-card.component';
 import { FooFormControlComponent } from './foo-form-control/foo-form-control.component';
 import { ImageCardCaptionComponent } from './image-card/image-card-caption.component';
 import { ImageCardComponent } from './image-card/image-card.component';
+import { TabButtonComponent } from './tab-button/tab-button.component';
+import { TabButtonGroupComponent } from './tab-button-group/tab-button-group.component';
 
 export const COMPONENTS = [
 	ControlValueAccessorComponent,
@@ -16,4 +18,6 @@ export const COMPONENTS = [
 	FooFormControlComponent,
 	ImageCardCaptionComponent,
 	ImageCardComponent,
+	TabButtonComponent,
+	TabButtonGroupComponent
 ];

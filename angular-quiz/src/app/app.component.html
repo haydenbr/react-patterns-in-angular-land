@@ -54,6 +54,21 @@
 
 <h2>Compound Components</h2>
 
+<div class="tabs">
+	<tab-button-group [formControl]="tabButtonsFormControl">
+		<tab-button
+			*ngFor="let tab of tabContents"
+			[value]="tab.value"
+		>
+			{{tab.text}}
+		</tab-button>
+	</tab-button-group>
+
+	<p class="tab-message">
+		{{ tabsContent$ | async }}
+	</p>
+</div>
+
 <h2>Render Prop</h2>
 
 <h2>Experiments</h2>

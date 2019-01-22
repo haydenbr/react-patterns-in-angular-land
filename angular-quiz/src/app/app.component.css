@@ -3,3 +3,9 @@
 	justify-content: space-between;
 	flex-wrap: wrap;
 }
+
+.tabs {
+	align-items: center;
+	display: flex;
+	justify-content: space-around;
+}

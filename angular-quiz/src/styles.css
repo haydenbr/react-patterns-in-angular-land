@@ -3,8 +3,8 @@
 :root {
 	--cta-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.8);
 	--cta-border-radius: 10px;
-	--default-color: #3c3c3c;
-	--disabled-color: #b7a5ad;
+	--default-color: #50414d;
+	--disabled-color: #856e80;
 	--primary-color: #934c6c;
 	--danger-color: #e03c3f;
 	--success-color: #93e03c;
