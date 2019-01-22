@@ -49,23 +49,21 @@ export class TabButtonGroupComponent implements AfterViewInit, OnDestroy, Contro
 	get selectedTab() {
 		return this.tabs.find((tab) => tab.value === this.value);
 	}
-	get tabElements() {
-		return this.tabs.map((tab) => tab.nativeElement);
-	}
 
 	ngAfterViewInit() {
+		this.animateTabStyles();
 		this.initTabSelectSubsctiptions();
 	}
 
 	private initTabSelectSubsctiptions() {
 		this.tabs.forEach((tab) =>
 			tab.tabSelect.pipe(
-				startWith(this.value),
 				takeUntil(this.killSubscriptions)
 			).subscribe(() => {
 				if (tab.value === this.value) {
 					return;
 				}
+
 				this.value = tab.value;
 				this.animateTabStyles();
 			})

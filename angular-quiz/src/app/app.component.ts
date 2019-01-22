@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, startWith, filter } from 'rxjs/operators';
 
 import { demoQuiz } from '@shared/demo-quiz';
 
@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
 	formControl = new FormControl();
 	formGroup: FormGroup;
 	demoQuiz = demoQuiz;
-	tabButtonsFormControl = new FormControl();
+	tabButtonsFormControl = new FormControl(1);
 	tabsContent$: Observable<string>;
 
 	tabContents = [
@@ -34,6 +34,8 @@ export class AppComponent implements OnInit {
 
 	ngOnInit() {
 		this.tabsContent$ = this.tabButtonsFormControl.valueChanges.pipe(
+			startWith(this.tabButtonsFormControl.value),
+			filter(x => !!x),
 			map(value => this.tabContents.find(t => t.value === value)),
 			map(tab => tab.message)
 		);

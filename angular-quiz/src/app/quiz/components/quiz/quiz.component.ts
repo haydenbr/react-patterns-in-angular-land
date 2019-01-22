@@ -23,34 +23,24 @@ import { Quiz, QuizStatus } from '@shared/types';
 		}
 	`],
 	template: `
-
+	<ng-container [ngSwitch]="quizStatus">
+		<ng-container *ngSwitchCase="${QuizStatus.Intro}">
+			<div id="quiz-title">{{title}}</div>
+			<div id="quiz-description">{{description}}</div>
+			<button
+				class="button primary"
+				(click)="startQuiz()"
+			>
+				Start Quiz
+			</button>
+		</ng-container>
+		<ng-container *ngSwitchCase="${QuizStatus.InProgress}">
+		</ng-container>
+		<ng-container *ngSwitchCase="${QuizStatus.Complete}">
+		</ng-container>
+	</ng-container>
 	`,
 })
-// <ng-container [ngSwitch]="quizStatus">
-// <ng-container *ngSwitchCase="${QuizStatus.Intro}">
-// 	<div id="quiz-title">{{title}}</div>
-// 	<div id="quiz-description">{{description}}</div>
-// 	<button
-// 		class="button primary"
-// 		(click)="startQuiz()"
-// 	>
-// 		Start Quiz
-// 	</button>
-// </ng-container>
-// <ng-container *ngSwitchCase="${QuizStatus.InProgress}">
-// 	<cc-question
-// 		[question]="currentQuestion"
-// 	>
-// 		<cc-answer
-// 			*ngFor="let answer of answers"
-// 			[answer]="answer"
-// 		></cc-answer>
-// 	</cc-question>
-// </ng-container>
-// <ng-container *ngSwitchCase="${QuizStatus.Complete}">
-
-// </ng-container>
-// </ng-container>
 export class QuizComponent {
 	@Input() quiz: Quiz;
 	currentQuestionIndex = 0;
