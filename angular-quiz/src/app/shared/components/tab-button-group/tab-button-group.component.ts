@@ -1,13 +1,10 @@
 import { AfterViewInit, Component, OnDestroy, ContentChildren, QueryList, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { TimelineLite, TweenConfig, TweenLite } from 'gsap';
+import { TimelineLite } from 'gsap';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, startWith } from 'rxjs/operators';
 
 import { TabButtonComponent } from '../tab-button/tab-button.component';
-import { animateInTabs, animateOutTabs } from './tab-button-group.animation';
-
-const noopTween = () => new TweenLite({}, 0, 0);
 
 @Component({
 	selector: 'tab-button-group',
@@ -29,8 +26,18 @@ export class TabButtonGroupComponent implements AfterViewInit, OnDestroy, Contro
 	onTouched = () => {};
 	private killSubscriptions = new Subject();
 	private _value: string;
-	private shouldAnimateIn = false;
-	private animateInConfig: TweenConfig = {};
+
+	writeValue(value: any) {
+		if (value) {
+			this.value = value;
+		}
+	}
+	registerOnChange(onChange: any) {
+		this.onChange = onChange;
+	}
+	registerOnTouched(onTouched: any) {
+		this.onTouched = onTouched;
+	}
 
 	get value() {
 		return this._value;
@@ -47,27 +54,18 @@ export class TabButtonGroupComponent implements AfterViewInit, OnDestroy, Contro
 	}
 
 	ngAfterViewInit() {
-		this.applyInitialStyles();
 		this.initTabSelectSubsctiptions();
-
-		if (this.shouldAnimateIn) {
-			this.animateIn(this.animateInConfig);
-		}
-	}
-
-	private applyInitialStyles() {
-		if (this.selectedTab) {
-			this.selectedTab.nativeElement.classList.add('selected');
-		}
 	}
 
 	private initTabSelectSubsctiptions() {
 		this.tabs.forEach((tab) =>
-			tab.tabSelect.pipe(takeUntil(this.killSubscriptions)).subscribe(() => {
+			tab.tabSelect.pipe(
+				startWith(this.value),
+				takeUntil(this.killSubscriptions)
+			).subscribe(() => {
 				if (tab.value === this.value) {
 					return;
 				}
-
 				this.value = tab.value;
 				this.animateTabStyles();
 			})
@@ -82,33 +80,5 @@ export class TabButtonGroupComponent implements AfterViewInit, OnDestroy, Contro
 
 	ngOnDestroy() {
 		this.killSubscriptions.next();
-	}
-
-	writeValue(value: any) {
-		if (value) {
-			this.value = value;
-		}
-	}
-
-	registerOnChange(fn) {
-		this.onChange = fn;
-	}
-
-	registerOnTouched(fn) {
-		this.onTouched = fn;
-	}
-
-	public animateIn(config: TweenConfig = {}) {
-		if (this.tabElements && this.tabElements.length) {
-			return animateInTabs(this.tabElements, config);
-		} else {
-			this.shouldAnimateIn = true;
-			this.animateInConfig = config;
-			return noopTween();
-		}
-	}
-
-	public animateOut(config: TweenConfig = {}) {
-		return animateOutTabs(this.tabElements, config);
 	}
 }

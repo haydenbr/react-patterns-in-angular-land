@@ -15,21 +15,12 @@ import { animateDeselection, animateSelection } from './tab-button.animation';
 			cursor: pointer;
 			display: flex;
 			font-size: 28px;
-			height: 125px;
+			height: 100px;
 			justify-content: flex-end;
 			margin-bottom: 5px;
-			opacity: 0.6;
-			overflow: hidden;
-			padding: 15px 20px;
+			padding: 10px;
 			position: relative;
-			width: 455px;
-			transform: translate3D(-80px, 0, 0);
-		}
-
-		:host.selected {
-			font-weight: bold;
-			opacity: 1;
-			transform: translate3D(-10px, 0, 0);
+			width: 400px;
 		}
 
 		#tab-title {

@@ -7,5 +7,9 @@
 .tabs {
 	align-items: center;
 	display: flex;
-	justify-content: space-around;
+}
+
+tab-button-group {
+	position: relative;
+	left: -100px;
 }
