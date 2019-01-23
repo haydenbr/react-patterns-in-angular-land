@@ -3,8 +3,6 @@ import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, filter } from 'rxjs/operators';
 
-import { demoQuiz } from '@shared/demo-quiz';
-
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
@@ -13,7 +11,6 @@ import { demoQuiz } from '@shared/demo-quiz';
 export class AppComponent implements OnInit {
 	formControl = new FormControl();
 	formGroup: FormGroup;
-	demoQuiz = demoQuiz;
 	tabButtonsFormControl = new FormControl();
 	tabsContent$: Observable<string>;
 

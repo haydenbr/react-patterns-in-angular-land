@@ -1,14 +1,14 @@
 @import 'normalize.css/normalize.css';
 
 :root {
-	--cta-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.8);
+	--cta-box-shadow: 0px 1px 6px rgba(0,0,0,0.6);
 	--cta-border-radius: 10px;
 	--default-color: #50414d;
-	--disabled-color: #856e80;
-	--primary-color: #934c6c;
+	--primary-color: #b64578;
 	--danger-color: #e03c3f;
 	--success-color: #93e03c;
 
+	background-color: #ffefef55;
 	color: var(--default-color);
 	font-family: Arial, Helvetica, sans-serif;
 	padding: 20px;
@@ -20,6 +20,7 @@
 
 button {
 	cursor: pointer;
+	border-image-width: 0;
 }
 
 button.button {
@@ -27,10 +28,15 @@ button.button {
 	border-width: 0;
 	box-shadow: var(--cta-box-shadow);
 	font-size: 18px;
-	padding: 5px 20px;
+	padding: 10px 25px;
 }
 
 button.primary {
 	background-color: var(--primary-color);
 	color: white;
+}
+
+button.disabled {
+	cursor: default;
+	opacity: 0.7;
 }

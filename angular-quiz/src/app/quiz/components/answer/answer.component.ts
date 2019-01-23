@@ -1,44 +1,52 @@
-import { Component, Input, ChangeDetectorRef, HostListener } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, Input, HostBinding } from '@angular/core';
 
-import { Answer, Question } from '@shared/types';
+import { getAnswerLabel } from '@shared/logic';
+import { Answer, LabelType } from '@shared/types';
 
 @Component({
 	selector: 'answer',
 	styles: [`
 		:host {
 			align-items: center;
-			border: 2px solid var(--default-color);
+			background-color: #fff;
+			border: 2px solid #fff;
 			border-radius: var(--cta-border-radius);
+			box-shadow: var(--cta-box-shadow);
 			cursor: pointer;
 			display: flex;
-			padding: 20px 10px;
+			padding: 20px;
+		}
+
+		:host.selected {
+			border-color: var(--primary-color);
+		}
+
+		.answer-label {
+			font-size: 32px;
+			margin-right: 20px;
+		}
+
+		.selected.answer-label {
+			color: var(--primary-color);
 		}
 	`],
 	template: `
-		<div id="label"></div>
+		<div class="answer-label" [class.selected]="selected">
+			<strong>{{label}}</strong>
+		</div>
 		<div class="answer-description">{{description}}</div>
 	`
 })
 export class AnswerComponent {
-	@Input() question: Question;
 	@Input() answer: Answer;
-
-	private _selected: boolean;
-	set selected(selected: boolean) {
-		this._selected = selected;
-		this.cd.markForCheck();
-	}
-	get selected() {
-		return this._selected;
-	}
-
-	answerClick$ = new Subject();
-	@HostListener('click') onAnswerClick = () => this.answerClick$.next();
-
-	constructor(private cd: ChangeDetectorRef) {}
+	@Input() index: number;
+	@HostBinding('class.selected') @Input() selected: boolean;
 
 	get description() {
-		return this.answer.description;
+		return this.answer && this.answer.description;
+	}
+
+	get label() {
+		return getAnswerLabel({ answerIndex: this.index, labelType: LabelType.Alpha });
 	}
 }

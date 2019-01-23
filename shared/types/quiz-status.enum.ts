@@ -1,5 +1,5 @@
 export enum QuizStatus {
-	Intro,
+	NotStarted,
 	InProgress,
 	Complete
 }

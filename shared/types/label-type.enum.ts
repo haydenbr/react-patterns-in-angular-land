@@ -1,5 +1,5 @@
 export enum LabelType {
 	Alpha,
-	Numerica,
+	Numeric,
 	None
 }

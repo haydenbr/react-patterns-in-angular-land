@@ -1,4 +1,4 @@
-import { Quiz, QuestionType, LabelType } from './types';
+import { Quiz, QuestionType, LabelType, QuizStatus } from './types';
 
 export const demoQuiz: Quiz = {
 	quizId: 1,
@@ -6,10 +6,11 @@ export const demoQuiz: Quiz = {
 	title: 'Boring Demo Quiz',
 	showAnswers: true,
 	labelType: LabelType.Alpha,
+	status: QuizStatus.InProgress,
 	questions: [
 		{
 			questionId: 1,
-			questionType: QuestionType.MultipleResponse,
+			questionType: QuestionType.SingleResponse,
 			description: 'this is a multiple response question',
 			answers: [
 				{
@@ -20,7 +21,7 @@ export const demoQuiz: Quiz = {
 				{
 					answerId: 2,
 					description: 'this is correct',
-					isCorrect: true
+					isCorrect: false
 				},
 				{
 					answerId: 3,
@@ -30,7 +31,7 @@ export const demoQuiz: Quiz = {
 				{
 					answerId: 4,
 					description: 'this is correct',
-					isCorrect: true
+					isCorrect: false
 				},
 				{
 					answerId: 5,
@@ -68,7 +69,7 @@ export const demoQuiz: Quiz = {
 		},
 		{
 			questionId: 3,
-			questionType: QuestionType.TrueFalse,
+			questionType: QuestionType.SingleResponse,
 			description: 'this is a true/false question',
 			answers: [
 				{

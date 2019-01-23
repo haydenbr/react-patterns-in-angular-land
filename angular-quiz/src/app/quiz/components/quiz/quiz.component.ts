@@ -1,14 +1,20 @@
-import { Component, Input } from '@angular/core';
-import { Quiz, QuizStatus } from '@shared/types';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+
+import { isQuestionAnswered } from '@shared/logic';
+import { QuizStatus } from '@shared/types';
+import { demoQuiz } from '@shared/demo-quiz';
 
 @Component({
 	selector: 'quiz',
 	styles: [`
 		:host {
-			border: 1px solid black;
+			background-color: #fff;
+			box-shadow: inset 0 0 2px rgba(0,0,0,0.5);
 			display: block;
 			min-height: 600px;
-			padding: 10px;
+			padding: 20px;
+			max-width: 900px;
 		}
 
 		#quiz-title {
@@ -21,10 +27,22 @@ import { Quiz, QuizStatus } from '@shared/types';
 		#quiz-description {
 			margin-bottom: 20px;
 		}
+
+		#quiz-controls {
+			clear: both;
+		}
+
+		#quiz-controls .back.button {
+			float: left;
+		}
+
+		#quiz-controls .next.button {
+			float: right;
+		}
 	`],
 	template: `
 	<ng-container [ngSwitch]="quizStatus">
-		<ng-container *ngSwitchCase="${QuizStatus.Intro}">
+		<ng-container *ngSwitchCase="${QuizStatus.NotStarted}">
 			<div id="quiz-title">{{title}}</div>
 			<div id="quiz-description">{{description}}</div>
 			<button
@@ -35,6 +53,35 @@ import { Quiz, QuizStatus } from '@shared/types';
 			</button>
 		</ng-container>
 		<ng-container *ngSwitchCase="${QuizStatus.InProgress}">
+			<form [formGroup]="formGroup">
+				<question
+					[formControlName]="currentQuestionId"
+					[question]="currentQuestion"
+				></question>
+			</form>
+			<div id="quiz-controls">
+				<button
+					*ngIf="hasPrevious"
+					class="button primary back"
+					(click)="goBack()"
+				>
+					Back
+				</button>
+				<button
+					*ngIf="!canGoNext"
+					class="button primary next"
+					(click)="confirmAnswer()"
+				>
+					Confirm
+				</button>
+				<button
+					*ngIf="canGoNext"
+					class="button primary next"
+					(click)="goNext()"
+				>
+					Next
+				</button>
+			</div>
 		</ng-container>
 		<ng-container *ngSwitchCase="${QuizStatus.Complete}">
 		</ng-container>
@@ -42,9 +89,19 @@ import { Quiz, QuizStatus } from '@shared/types';
 	`,
 })
 export class QuizComponent {
-	@Input() quiz: Quiz;
 	currentQuestionIndex = 0;
-	quizStatus = QuizStatus.Intro;
+	quiz = demoQuiz;
+	formGroup = new FormBuilder().group(
+		this.questions.reduce((config, q) => ({ ...config, [q.questionId]: [undefined, Validators.required] }), {})
+	);
+
+	get quizStatus() {
+		return this.quiz && this.quiz.status;
+	}
+
+	set quizStatus(status: QuizStatus) {
+		this.quiz = { ...this.quiz, status };
+	}
 
 	get title() {
 		return this.quiz && this.quiz.description;
@@ -54,17 +111,53 @@ export class QuizComponent {
 		return this.quiz && this.quiz.description;
 	}
 
+	get currentQuestionId() {
+		return this.currentQuestion.questionId;
+	}
+
+	get currentQuestion() {
+		return this.questions[this.currentQuestionIndex];
+	}
+
+	get questions() {
+		return (this.quiz && this.quiz.questions) || [];
+	}
+
+	get canGoNext() {
+		return this.hasNext && this.isQuestionAnswered;
+	}
+
+	get isQuestionAnswered() {
+		return isQuestionAnswered(this.currentQuestion);
+	}
+
+	get hasPrevious() {
+		return this.currentQuestionIndex > 0;
+	}
+
+	get hasNext() {
+		return this.currentQuestionIndex < this.questions.length - 1;
+	}
+
 	startQuiz() {
-		if (this.quizStatus === QuizStatus.Intro) {
+		if (this.quizStatus === QuizStatus.NotStarted) {
 			this.quizStatus = QuizStatus.InProgress;
 		}
 	}
 
-	get currentQuestion() {
-		return this.quiz && this.quiz.questions[this.currentQuestionIndex];
+	goBack() {
+		if (this.hasPrevious) {
+			this.currentQuestionIndex = this.currentQuestionIndex - 1;
+		}
 	}
 
-	get answers() {
-		return this.currentQuestion && this.currentQuestion.answers;
+	goNext() {
+		if (this.canGoNext) {
+			this.currentQuestionIndex = this.currentQuestionIndex + 1;
+		}
+	}
+
+	confirmAnswer() {
+
 	}
 }
