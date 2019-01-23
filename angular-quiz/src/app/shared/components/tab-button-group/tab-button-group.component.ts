@@ -71,9 +71,14 @@ export class TabButtonGroupComponent implements AfterViewInit, OnDestroy, Contro
 	}
 
 	private animateTabStyles() {
-		return new TimelineLite()
-			.add(this.tabs.map((tab) => tab.animateDeselection()), 'start')
-			.add(this.selectedTab.animateSelection(), 'start');
+		let timeline = new TimelineLite()
+			.add(this.tabs.map((tab) => tab.animateDeselection()), 'start');
+
+		if (this.selectedTab) {
+			timeline = timeline.add(this.selectedTab.animateSelection(), 'start');
+		}
+
+		return timeline;
 	}
 
 	ngOnDestroy() {

@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
 	formControl = new FormControl();
 	formGroup: FormGroup;
 	demoQuiz = demoQuiz;
-	tabButtonsFormControl = new FormControl(1);
+	tabButtonsFormControl = new FormControl();
 	tabsContent$: Observable<string>;
 
 	tabContents = [
