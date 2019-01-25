@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
-import { isQuestionAnswered } from '@shared/logic';
+import { isQuestionAnswered, checkQuestion, isQuizComplete, calculateQuizScore } from '@shared/logic';
 import { QuizStatus } from '@shared/types';
 import { demoQuiz } from '@shared/demo-quiz';
 
@@ -53,12 +53,10 @@ import { demoQuiz } from '@shared/demo-quiz';
 			</button>
 		</ng-container>
 		<ng-container *ngSwitchCase="${QuizStatus.InProgress}">
-			<form [formGroup]="formGroup">
-				<question
-					[formControlName]="currentQuestionId"
-					[question]="currentQuestion"
-				></question>
-			</form>
+			<question
+				[formControl]="formControl"
+				[question]="currentQuestion"
+			></question>
 			<div id="quiz-controls">
 				<button
 					*ngIf="hasPrevious"
@@ -68,32 +66,58 @@ import { demoQuiz } from '@shared/demo-quiz';
 					Back
 				</button>
 				<button
-					*ngIf="!canGoNext"
-					class="button primary next"
-					(click)="confirmAnswer()"
-				>
-					Confirm
-				</button>
-				<button
 					*ngIf="canGoNext"
 					class="button primary next"
 					(click)="goNext()"
 				>
 					Next
 				</button>
+				<button
+					*ngIf="showConfirmAnswer"
+					class="button primary next"
+					[class.disabled]="!canConfirmAnswer"
+					(click)="confirmAnswer()"
+				>
+					Confirm
+				</button>
+				<button
+					*ngIf="isQuizComplete"
+					class="button primary next"
+					(click)="goToResults()"
+				>
+					See Results!
+				</button>
 			</div>
+			<button (click)="debug()">debug</button>
 		</ng-container>
 		<ng-container *ngSwitchCase="${QuizStatus.Complete}">
+			<div id="quiz-title">Results: {{title}}</div>
+			<div>Your scored {{ score | number:'1.0-0' }}%</div>
+			<h1 *ngIf="passedQuiz">Hooray you passed!</h1>
+			<h1 *ngIf="!passedQuiz">Better luck next time, chump ...</h1>
+			<button
+				class="button primary"
+				(click)="startOver()"
+			>
+				Start Over
+			</button>
 		</ng-container>
 	</ng-container>
 	`,
 })
 export class QuizComponent {
-	currentQuestionIndex = 0;
+	_currentQuestionIndex = 0;
 	quiz = demoQuiz;
-	formGroup = new FormBuilder().group(
-		this.questions.reduce((config, q) => ({ ...config, [q.questionId]: [undefined, Validators.required] }), {})
-	);
+	formControl = new FormControl();
+
+	get currentQuestionIndex() {
+		return this._currentQuestionIndex;
+	}
+
+	set currentQuestionIndex(index: number) {
+		this._currentQuestionIndex = index;
+		this.formControl = new FormControl();
+	}
 
 	get quizStatus() {
 		return this.quiz && this.quiz.status;
@@ -127,6 +151,19 @@ export class QuizComponent {
 		return this.hasNext && this.isQuestionAnswered;
 	}
 
+	get showConfirmAnswer() {
+		return !this.canGoNext && !this.isQuizComplete;
+	}
+
+	get canConfirmAnswer() {
+		let answers = this.selectedAnswers;
+		return answers && answers.length && answers.length > 0;
+	}
+
+	get selectedAnswers() {
+		return this.formControl.value;
+	}
+
 	get isQuestionAnswered() {
 		return isQuestionAnswered(this.currentQuestion);
 	}
@@ -137,6 +174,18 @@ export class QuizComponent {
 
 	get hasNext() {
 		return this.currentQuestionIndex < this.questions.length - 1;
+	}
+
+	get isQuizComplete() {
+		return isQuizComplete(this.quiz);
+	}
+
+	get passedQuiz() {
+		return this.quiz.passed;
+	}
+
+	get score() {
+		return this.quiz.score && this.quiz.score * 100;
 	}
 
 	startQuiz() {
@@ -158,6 +207,30 @@ export class QuizComponent {
 	}
 
 	confirmAnswer() {
+		if (!this.canConfirmAnswer) {
+			return;
+		}
 
+		let answeredQuestion = checkQuestion({ question: this.currentQuestion, answerIds: this.selectedAnswers});
+		let questions = this.quiz.questions.map((q) => q.questionId === answeredQuestion.questionId ? answeredQuestion : q);
+		this.quiz = { ...this.quiz, questions };
+
+		if (this.isQuizComplete) {
+			let score = calculateQuizScore(this.quiz);
+			let passed = score > this.quiz.passingScore;
+			this.quiz = { ...this.quiz, score, passed };
+		}
+	}
+
+	goToResults() {
+		if (this.isQuizComplete) {
+			this.quizStatus = QuizStatus.Complete;
+			console.log(calculateQuizScore(this.quiz));
+		}
+	}
+
+	startOver() {
+		this.quiz = demoQuiz;
+		this.currentQuestionIndex = 0;
 	}
 }

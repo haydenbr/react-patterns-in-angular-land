@@ -78,12 +78,7 @@
 <h3>ControlValueAccessor as a render prop</h3>
 
 <p>
-	This is a pretty cool way to reduce the boiler plate of a control value accessor, but it's not super reusable.
-	You can't wrap it in another component and still provide the same level of flexibility of a true form control.
-	In it's current form, it's also not very useful because there's no local state, which isn't necessarily a bad thing,
-	but there's no way to build up form control state from a series of user interactions. You could probably pull
-	it off with some fancy prop getter / state reducer voodoo. Or you could write a component that expects an
-	onChanges function, but then you end up with a lot of extra layers and components.
+	This is a pretty cool way to reduce the boiler plate of a control val accessor, but it's not super reusable. You can't wrap it in another component and still provide the same level of flexibility of a true form control. In it's current form, it's also not very useful because there's no local state, which isn't necessarily a bad thing, but there's no way to build up form control state from a series of user interactions. You could probably pull it off with some fancy prop getter / state reducer voodoo. Or you could write a component that expects an onChanges function, but then you end up with a lo of extra layers and components.
 </p>
 
 <control-value-accessor [formControl]="formControl">
@@ -106,3 +101,9 @@
 		</ng-template>
 	</control-value-accessor>
 </form>
+
+<h3>props directive</h3>
+
+<p>
+	The idea of this is to be able to set attributes and properties on dom elements and pass Inputs to child components in one fell swoop. This allows you to pass inputs and set attributes without knowing what they are. This can be helpful if you had a component/library that helped with accessability. It gave you the right attributes, you just had to put them on there. In standard angular land, the user (developer) would be responsible for knowing all the attributes and inputs coming back, maybe destructure an object, and then wire up everything correctly. So this requires a lot more cognitive overhead and more code.
+</p>

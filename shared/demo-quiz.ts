@@ -7,6 +7,7 @@ export const demoQuiz: Quiz = {
 	showAnswers: true,
 	labelType: LabelType.Alpha,
 	status: QuizStatus.InProgress,
+	passingScore: 0.5,
 	questions: [
 		{
 			questionId: 1,

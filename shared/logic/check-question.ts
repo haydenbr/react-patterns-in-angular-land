@@ -1,5 +1,5 @@
 import { Answer, Question } from '../types';
-import { getCorrectAnswers } from './get-correct.answers';
+import { getCorrectAnswers } from './get-correct-answers';
 
 interface checkQuestionSignature {
 	question: Question;
@@ -12,7 +12,7 @@ export function checkQuestion({ question, answerIds }: checkQuestionSignature): 
 		true
 	);
 	let answeredAllCorrectAnswers = getCorrectAnswers(question.answers)
-		.filter((a) => answerIds.includes(a.answerId)).length === 0;
+		.filter((a) => !answerIds.includes(a.answerId)).length === 0;
 	let isCorrect = allSelectedAnswersAreCorrect && answeredAllCorrectAnswers;
 
 	return { ...question, response: { answerIds, isCorrect } };

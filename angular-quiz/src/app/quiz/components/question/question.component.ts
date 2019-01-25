@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { Question, Answer } from '@shared/types';
@@ -31,15 +31,27 @@ import { Question, Answer } from '@shared/types';
 			*ngFor="let answer of answers; let i = index;"
 			[answer]="answer"
 			[index]="i"
+			[disabled]="isQuestionComplete"
 			[selected]="isAnswerSelected(answer)"
 			(click)="onAnswerClick(answer)"
 		></answer>
 	`,
 })
 export class QuestionComponent implements ControlValueAccessor {
-	@Input() question: Question;
-
+	private _question: Question;
 	private _value: number[] = [];
+
+	get question() {
+		return this._question;
+	}
+	@Input() set question(question: Question) {
+		this._question = question;
+
+		if (this.isQuestionComplete) {
+			this.value = this.question.response.answerIds;
+		}
+	}
+
 	private get value() {
 		return this._value || [];
 	}
@@ -52,7 +64,7 @@ export class QuestionComponent implements ControlValueAccessor {
 	onTouched = () => {};
 
 	writeValue(value) {
-		if (value !== undefined) {
+		if (value !== null) {
 			this.value = value;
 		}
 	}
@@ -64,6 +76,10 @@ export class QuestionComponent implements ControlValueAccessor {
 	}
 
 	onAnswerClick(answer: Answer) {
+		if (this.isQuestionComplete) {
+			return;
+		}
+
 		this.value = [answer.answerId];
 	}
 
@@ -73,6 +89,10 @@ export class QuestionComponent implements ControlValueAccessor {
 
 	get description() {
 		return this.question && this.question.description;
+	}
+
+	get isQuestionComplete() {
+		return this.question && this.question.response;
 	}
 
 	isAnswerSelected(answer: Answer) {

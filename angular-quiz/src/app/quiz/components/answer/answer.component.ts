@@ -17,6 +17,11 @@ import { Answer, LabelType } from '@shared/types';
 			padding: 20px;
 		}
 
+		:host.disabled {
+			cursor: default;
+			border-color: var(--disabled-color);
+		}
+
 		:host.selected {
 			border-color: var(--primary-color);
 		}
@@ -26,12 +31,20 @@ import { Answer, LabelType } from '@shared/types';
 			margin-right: 20px;
 		}
 
+		.disabled.answer-label {
+			color: var(--disabled-color);
+		}
+
 		.selected.answer-label {
 			color: var(--primary-color);
 		}
 	`],
 	template: `
-		<div class="answer-label" [class.selected]="selected">
+		<div
+			class="answer-label"
+			[class.selected]="selected"
+			[class.disabled]="disabled"
+		>
 			<strong>{{label}}</strong>
 		</div>
 		<div class="answer-description">{{description}}</div>
@@ -40,6 +53,7 @@ import { Answer, LabelType } from '@shared/types';
 export class AnswerComponent {
 	@Input() answer: Answer;
 	@Input() index: number;
+	@HostBinding('class.disabled') @Input() disabled: boolean;
 	@HostBinding('class.selected') @Input() selected: boolean;
 
 	get description() {

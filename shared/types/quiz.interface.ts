@@ -10,4 +10,7 @@ export interface Quiz {
 	questions: Question[];
 	showAnswers: boolean;
 	status: QuizStatus;
+	passingScore: number;
+	score?: number;
+	passed?: boolean;
 }
