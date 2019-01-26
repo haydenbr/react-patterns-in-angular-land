@@ -11,9 +11,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 		}
 	],
 	template: `
-		<ng-container
-			*ngTemplateOutlet="template; context: context"
-		></ng-container>
+		<ng-container *ngTemplateOutlet="template; context: context"></ng-container>
 	`,
 })
 export class ControlValueAccessorComponent implements ControlValueAccessor {

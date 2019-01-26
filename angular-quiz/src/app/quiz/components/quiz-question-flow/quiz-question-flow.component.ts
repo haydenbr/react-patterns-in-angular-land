@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 
 import { isQuizComplete, isQuestionAnswered } from '@shared/logic';
-import { Quiz } from '@shared/types';
+import { Quiz, QuestionType } from '@shared/types';
 
 @Component({
 	selector: 'quiz-question-flow',
@@ -25,10 +25,13 @@ import { Quiz } from '@shared/types';
 		}
 	`],
 	template: `
-		<single-response-question
-			[formControl]="formControl"
-			[question]="currentQuestion"
-		></single-response-question>
+		<ng-container [ngSwitch]="currentQuestion.questionType">
+			<single-response-question
+				*ngSwitchCase="${QuestionType.SingleResponse}"
+				[formControl]="formControl"
+				[question]="currentQuestion"
+			></single-response-question>
+		</ng-container>
 		<div id="quiz-controls">
 			<button
 				*ngIf="hasPrevious"

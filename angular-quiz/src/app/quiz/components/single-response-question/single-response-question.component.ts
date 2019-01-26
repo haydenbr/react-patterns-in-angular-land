@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { getAnswerLabel } from '@shared/logic';
@@ -25,49 +25,46 @@ import { Question, Answer, LabelType } from '@shared/types';
 		}
 	`],
 	template: `
-		<div class="question-description">
-			<strong>{{description}}</strong>
-		</div>
-		<answer
-			*ngFor="let answer of answers; let i = index;"
-			[answer]="answer"
-			[disabled]="isQuestionComplete"
-			[selected]="isAnswerSelected(answer)"
-			(click)="onAnswerClick(answer)"
+		<question
+			[question]="question"
+			[onChange]="onChange"
 		>
-			<answer-label>{{getAnswerLabel(i)}}</answer-label>
-		</answer>
+			<ng-template let-context="context">
+				<div class="question-description">
+					<strong>{{question.description}}</strong>
+				</div>
+				<answer
+					*ngFor="let answer of question.answers; let i = index;"
+					[answer]="answer"
+					[disabled]="context.isQuestionComplete"
+					[selected]="context.isAnswerSelected(answer)"
+					(click)="context.answerClick(answer)"
+				>
+					<answer-label>{{getAnswerLabel(i)}}</answer-label>
+				</answer>
+			</ng-template>
+		</question>
 	`,
 })
 export class SingleResponseQuestionComponent implements ControlValueAccessor {
 	private _question: Question;
-	private _value: number[] = [];
+	initialValue: any;
 
 	get question() {
 		return this._question;
 	}
 	@Input() set question(question: Question) {
 		this._question = question;
-
-		if (this.isQuestionComplete) {
-			this.value = this.question.response.answerIds;
-		}
-	}
-
-	private get value() {
-		return this._value || [];
-	}
-	private set value(value: number[]) {
-		this._value = value;
-		this.onChange(this.value);
 	}
 
 	onChange = (_: any) => {};
 	onTouched = () => {};
 
-	writeValue(value) {
-		if (value !== null) {
-			this.value = value;
+	writeValue(initialValue) {
+		if (initialValue !== null) {
+			/*
+				This method is called only when the component is initialized and the associated form control, NgModel, etc, has an initial value, like in the case of `new FormControl(initialValue)`. So this is where you would decide what to do with that. However, the <question> component knows how to rehydrate itself. When the question is set, it checks to see if the current question already has a selected value, and calls onChange. So we've handled the initialValue case, but internally so that the consuming component doesn't have to be responsible. Is this the right way to handle it? Maybe, mabye not. It seems nice that the consuming component, in this case quiz-question-flow, doesn't have to worry about checking for existing values and such, but then again, it might not be the API that users would expect. But maybe it doesn't make a huge difference either way.
+			*/
 		}
 	}
 	registerOnChange(onChange: any) {
@@ -77,31 +74,7 @@ export class SingleResponseQuestionComponent implements ControlValueAccessor {
 		this.onTouched = onTouched;
 	}
 
-	onAnswerClick(answer: Answer) {
-		if (this.isQuestionComplete) {
-			return;
-		}
-
-		this.value = [answer.answerId];
-	}
-
-	get answers() {
-		return (this.question && this.question.answers) || [];
-	}
-
-	get description() {
-		return this.question && this.question.description;
-	}
-
-	get isQuestionComplete() {
-		return this.question && this.question.response;
-	}
-
 	getAnswerLabel(answerIndex: number) {
 		return getAnswerLabel({ answerIndex, labelType: LabelType.Alpha });
-	}
-
-	isAnswerSelected(answer: Answer) {
-		return this.value.includes(answer.answerId);
 	}
 }
