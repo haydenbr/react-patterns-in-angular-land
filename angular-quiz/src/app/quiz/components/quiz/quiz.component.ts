@@ -78,6 +78,15 @@ export class QuizComponent {
 		this.currentQuestionIndex = this.currentQuestionIndex + 1;
 	}
 
+	goToResults() {
+		this.quizStatus = QuizStatus.Complete;
+	}
+
+	startOver() {
+		this.quiz = demoQuiz;
+		this.currentQuestionIndex = 0;
+	}
+
 	confirmAnswer(selectedAnswers: number[]) {
 		let answeredQuestion = checkQuestion({
 			question: this.currentQuestion,
@@ -91,14 +100,5 @@ export class QuizComponent {
 			let passed = score > this.quiz.passingScore;
 			this.quiz = { ...this.quiz, score, passed };
 		}
-	}
-
-	goToResults() {
-		this.quizStatus = QuizStatus.Complete;
-	}
-
-	startOver() {
-		this.quiz = demoQuiz;
-		this.currentQuestionIndex = 0;
 	}
 }

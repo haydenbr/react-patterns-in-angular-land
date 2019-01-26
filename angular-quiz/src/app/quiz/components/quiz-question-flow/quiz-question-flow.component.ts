@@ -25,10 +25,10 @@ import { Quiz } from '@shared/types';
 		}
 	`],
 	template: `
-		<question
+		<single-response-question
 			[formControl]="formControl"
 			[question]="currentQuestion"
-		></question>
+		></single-response-question>
 		<div id="quiz-controls">
 			<button
 				*ngIf="hasPrevious"

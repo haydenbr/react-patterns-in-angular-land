@@ -1,101 +1,12 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-import { Question, Answer } from '@shared/types';
+import { Component } from '@angular/core';
 
 @Component({
 	selector: 'question',
-	providers: [{
-		provide: NG_VALUE_ACCESSOR,
-		useExisting: forwardRef(() => QuestionComponent),
-		multi: true,
-	}],
 	styles: [`
 		:host {
 			display: block;
 		}
-
-		.question-description {
-			margin-bottom: 10px;
-		}
-
-		answer {
-			margin-bottom: 20px;
-		}
 	`],
-	template: `
-		<div class="question-description">
-			<strong>{{description}}</strong>
-		</div>
-		<answer
-			*ngFor="let answer of answers; let i = index;"
-			[answer]="answer"
-			[index]="i"
-			[disabled]="isQuestionComplete"
-			[selected]="isAnswerSelected(answer)"
-			(click)="onAnswerClick(answer)"
-		></answer>
-	`,
+	template: ``,
 })
-export class QuestionComponent implements ControlValueAccessor {
-	private _question: Question;
-	private _value: number[] = [];
-
-	get question() {
-		return this._question;
-	}
-	@Input() set question(question: Question) {
-		this._question = question;
-
-		if (this.isQuestionComplete) {
-			this.value = this.question.response.answerIds;
-		}
-	}
-
-	private get value() {
-		return this._value || [];
-	}
-	private set value(value: number[]) {
-		this._value = value;
-		this.onChange(this.value);
-	}
-
-	onChange = (_: any) => {};
-	onTouched = () => {};
-
-	writeValue(value) {
-		if (value !== null) {
-			this.value = value;
-		}
-	}
-	registerOnChange(onChange: any) {
-		this.onChange = onChange;
-	}
-	registerOnTouched(onTouched: any) {
-		this.onTouched = onTouched;
-	}
-
-	onAnswerClick(answer: Answer) {
-		if (this.isQuestionComplete) {
-			return;
-		}
-
-		this.value = [answer.answerId];
-	}
-
-	get answers() {
-		return (this.question && this.question.answers) || [];
-	}
-
-	get description() {
-		return this.question && this.question.description;
-	}
-
-	get isQuestionComplete() {
-		return this.question && this.question.response;
-	}
-
-	isAnswerSelected(answer: Answer) {
-		return this.value.includes(answer.answerId);
-	}
-}
+export class QuestionComponent {}

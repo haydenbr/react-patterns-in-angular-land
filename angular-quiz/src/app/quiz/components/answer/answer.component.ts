@@ -45,22 +45,19 @@ import { Answer, LabelType } from '@shared/types';
 			[class.selected]="selected"
 			[class.disabled]="disabled"
 		>
-			<strong>{{label}}</strong>
+			<strong>
+				<ng-content select="answer-label"></ng-content>
+			</strong>
 		</div>
 		<div class="answer-description">{{description}}</div>
 	`
 })
 export class AnswerComponent {
 	@Input() answer: Answer;
-	@Input() index: number;
 	@HostBinding('class.disabled') @Input() disabled: boolean;
 	@HostBinding('class.selected') @Input() selected: boolean;
 
 	get description() {
 		return this.answer && this.answer.description;
-	}
-
-	get label() {
-		return getAnswerLabel({ answerIndex: this.index, labelType: LabelType.Alpha });
 	}
 }
