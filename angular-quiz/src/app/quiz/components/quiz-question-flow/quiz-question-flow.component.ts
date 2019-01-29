@@ -25,23 +25,27 @@ import { Quiz, QuestionType } from '@shared/types';
 		}
 	`],
 	template: `
-		<ng-container [ngSwitch]="currentQuestion.questionType">
-			<single-response-question
-				*ngSwitchCase="${QuestionType.SingleResponse}"
-				[formControl]="formControl"
-				[question]="currentQuestion"
-			></single-response-question>
-			<multiple-response-question
-				*ngSwitchCase="${QuestionType.MultipleResponse}"
-				[formControl]="formControl"
-				[question]="currentQuestion"
-			></multiple-response-question>
-			<true-false-question
-				*ngSwitchCase="${QuestionType.TrueFalse}"
-				[formControl]="formControl"
-				[question]="currentQuestion"
-			></true-false-question>
-		</ng-container>
+		<control-value-accessor [formControl]="formControl">
+			<ng-template let-context="context">
+				<ng-container [ngSwitch]="currentQuestion.questionType">
+					<single-response-question
+						*ngSwitchCase="${QuestionType.SingleResponse}"
+						[question]="currentQuestion"
+						[onChange]="context.onChange"
+					></single-response-question>
+					<multiple-response-question
+						*ngSwitchCase="${QuestionType.MultipleResponse}"
+						[question]="currentQuestion"
+						[onChange]="context.onChange"
+					></multiple-response-question>
+					<true-false-question
+						*ngSwitchCase="${QuestionType.TrueFalse}"
+						[question]="currentQuestion"
+						[onChange]="context.onChange"
+					></true-false-question>
+				</ng-container>
+			</ng-template>
+		</control-value-accessor>
 		<div id="quiz-controls">
 			<button
 				*ngIf="hasPrevious"

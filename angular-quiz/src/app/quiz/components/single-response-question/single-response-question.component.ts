@@ -1,16 +1,10 @@
-import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Input } from '@angular/core';
 
-import { getAnswerLabel, multipleSelectQuestion } from '@shared/logic';
+import { getAnswerLabel } from '@shared/logic';
 import { Question, LabelType, QuestionState } from '@shared/types';
 
 @Component({
 	selector: 'single-response-question',
-	providers: [{
-		provide: NG_VALUE_ACCESSOR,
-		useExisting: forwardRef(() => SingleResponseQuestionComponent),
-		multi: true,
-	}],
 	styles: [`
 		:host {
 			display: block;
@@ -43,28 +37,12 @@ import { Question, LabelType, QuestionState } from '@shared/types';
 		</question>
 	`,
 })
-export class SingleResponseQuestionComponent implements ControlValueAccessor {
+export class SingleResponseQuestionComponent {
 	@Input() question: Question;
+	@Input() onChange = (_: any) => {};
 
 	get onAnswerChange() {
 		return ({ selectedAnswerIds }: QuestionState) => this.onChange(selectedAnswerIds);
-	}
-
-	onChange = (_: any) => {};
-	onTouched = () => {};
-
-	writeValue(initialValue) {
-		if (initialValue !== null) {
-			/*
-				This method is called only when the component is initialized and the associated form control, NgModel, etc, has an initial value, like in the case of `new FormControl(initialValue)`. So this is where you would decide what to do with that. However, the <question> component knows how to rehydrate itself. When the question is set, it checks to see if the current question already has a selected value, and calls onChange. So we've handled the initialValue case, but internally so that the consuming component doesn't have to be responsible. Is this the right way to handle it? Maybe, mabye not. It seems nice that the consuming component, in this case quiz-question-flow, doesn't have to worry about checking for existing values and such, but then again, it might not be the API that users would expect. But maybe it doesn't make a huge difference either way.
-			*/
-		}
-	}
-	registerOnChange(onChange: any) {
-		this.onChange = onChange;
-	}
-	registerOnTouched(onTouched: any) {
-		this.onTouched = onTouched;
 	}
 
 	getAnswerLabel(answerIndex: number) {

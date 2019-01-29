@@ -1,15 +1,9 @@
-import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Input } from '@angular/core';
 
 import { Question, QuestionState, Answer } from '@shared/types';
 
 @Component({
 	selector: 'true-false-question',
-	providers: [{
-		provide: NG_VALUE_ACCESSOR,
-		useExisting: forwardRef(() => TrueFalseQuestionComponent),
-		multi: true,
-	}],
 	styles: [`
 		:host {
 			display: block;
@@ -42,22 +36,12 @@ import { Question, QuestionState, Answer } from '@shared/types';
 		</question>
 	`,
 })
-export class TrueFalseQuestionComponent implements ControlValueAccessor {
+export class TrueFalseQuestionComponent {
 	@Input() question: Question;
+	@Input() onChange = (_: any) => {};
 
 	get onAnswerChange() {
 		return ({ selectedAnswerIds }: QuestionState) => this.onChange(selectedAnswerIds);
-	}
-
-	onChange = (_: any) => {};
-	onTouched = () => {};
-
-	writeValue(initialValue) {}
-	registerOnChange(onChange: any) {
-		this.onChange = onChange;
-	}
-	registerOnTouched(onTouched: any) {
-		this.onTouched = onTouched;
 	}
 
 	getAnswerLabel(answer: Answer) {

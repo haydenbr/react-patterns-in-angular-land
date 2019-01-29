@@ -1,16 +1,10 @@
-import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Input } from '@angular/core';
 
 import { getAnswerLabel, multipleSelectQuestion } from '@shared/logic';
 import { Question, LabelType, QuestionState } from '@shared/types';
 
 @Component({
 	selector: 'multiple-response-question',
-	providers: [{
-		provide: NG_VALUE_ACCESSOR,
-		useExisting: forwardRef(() => MultipleResponseQuestionComponent),
-		multi: true,
-	}],
 	styles: [`
 		:host {
 			display: block;
@@ -46,23 +40,13 @@ import { Question, LabelType, QuestionState } from '@shared/types';
 		</question>
 	`,
 })
-export class MultipleResponseQuestionComponent implements ControlValueAccessor {
+export class MultipleResponseQuestionComponent {
 	@Input() question: Question;
+	@Input() onChange = (_: any) => {};
 	stateReducer = multipleSelectQuestion;
 
 	get onAnswerChange() {
 		return ({ selectedAnswerIds }: QuestionState) => this.onChange(selectedAnswerIds);
-	}
-
-	onChange = (_: any) => {};
-	onTouched = () => {};
-
-	writeValue() {}
-	registerOnChange(onChange: any) {
-		this.onChange = onChange;
-	}
-	registerOnTouched(onTouched: any) {
-		this.onTouched = onTouched;
 	}
 
 	getAnswerLabel(answerIndex: number) {
