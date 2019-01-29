@@ -12,7 +12,6 @@ export class QuestionComponent {
 	private selectedAnswerIds: number[] = [];
 	private _question: Question;
 	@ContentChild(TemplateRef) template: TemplateRef<any>;
-	@Input() onChange = (_: any) => {};
 	@Input() set question(question: Question) {
 		this._question = question;
 
@@ -34,13 +33,13 @@ export class QuestionComponent {
 		}};
 	}
 
-	answerClick(answer: Answer) {
+	answerClick(answer: Answer, callback = (_: any) => {}) {
 		if (this.isQuestionComplete) {
 			return;
 		}
 
 		this.selectedAnswerIds = [answer.answerId];
-		this.onChange(this.selectedAnswerIds);
+		callback(this.selectedAnswerIds);
 	}
 
 	isAnswerSelected(answer: Answer) {

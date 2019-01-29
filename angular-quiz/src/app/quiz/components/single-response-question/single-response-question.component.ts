@@ -27,7 +27,6 @@ import { Question, Answer, LabelType } from '@shared/types';
 	template: `
 		<question
 			[question]="question"
-			[onChange]="onChange"
 		>
 			<ng-template let-context="context">
 				<div class="question-description">
@@ -38,7 +37,7 @@ import { Question, Answer, LabelType } from '@shared/types';
 					[answer]="answer"
 					[disabled]="context.isQuestionComplete"
 					[selected]="context.isAnswerSelected(answer)"
-					(click)="context.answerClick(answer)"
+					(click)="context.answerClick(answer, onChange)"
 				>
 					<answer-label>{{getAnswerLabel(i)}}</answer-label>
 				</answer>
