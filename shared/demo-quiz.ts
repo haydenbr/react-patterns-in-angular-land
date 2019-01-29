@@ -11,7 +11,7 @@ export const demoQuiz: Quiz = {
 	questions: [
 		{
 			questionId: 1,
-			questionType: QuestionType.SingleResponse,
+			questionType: QuestionType.MultipleResponse,
 			description: 'this is a multiple response question',
 			answers: [
 				{
@@ -22,7 +22,7 @@ export const demoQuiz: Quiz = {
 				{
 					answerId: 2,
 					description: 'this is correct',
-					isCorrect: false
+					isCorrect: true
 				},
 				{
 					answerId: 3,
@@ -32,7 +32,7 @@ export const demoQuiz: Quiz = {
 				{
 					answerId: 4,
 					description: 'this is correct',
-					isCorrect: false
+					isCorrect: true
 				},
 				{
 					answerId: 5,
@@ -70,7 +70,7 @@ export const demoQuiz: Quiz = {
 		},
 		{
 			questionId: 3,
-			questionType: QuestionType.SingleResponse,
+			questionType: QuestionType.TrueFalse,
 			description: 'this is a true/false question',
 			answers: [
 				{

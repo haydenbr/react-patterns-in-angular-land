@@ -31,6 +31,16 @@ import { Quiz, QuestionType } from '@shared/types';
 				[formControl]="formControl"
 				[question]="currentQuestion"
 			></single-response-question>
+			<multiple-response-question
+				*ngSwitchCase="${QuestionType.MultipleResponse}"
+				[formControl]="formControl"
+				[question]="currentQuestion"
+			></multiple-response-question>
+			<true-false-question
+				*ngSwitchCase="${QuestionType.TrueFalse}"
+				[formControl]="formControl"
+				[question]="currentQuestion"
+			></true-false-question>
 		</ng-container>
 		<div id="quiz-controls">
 			<button
