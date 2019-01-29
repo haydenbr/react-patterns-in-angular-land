@@ -1,8 +1,9 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { getAnswerLabel } from '@shared/logic';
-import { Question, Answer, LabelType } from '@shared/types';
+import { Question, LabelType } from '@shared/types';
+import { QuestionState } from '../question/question.component';
 
 @Component({
 	selector: 'single-response-question',
@@ -37,7 +38,7 @@ import { Question, Answer, LabelType } from '@shared/types';
 					[answer]="answer"
 					[disabled]="context.isQuestionComplete"
 					[selected]="context.isAnswerSelected(answer)"
-					(click)="context.answerClick(answer, onChange)"
+					(click)="context.answerClick(answer, onAnswerChange)"
 				>
 					<answer-label>{{getAnswerLabel(i)}}</answer-label>
 				</answer>
@@ -54,6 +55,10 @@ export class SingleResponseQuestionComponent implements ControlValueAccessor {
 	}
 	@Input() set question(question: Question) {
 		this._question = question;
+	}
+
+	get onAnswerChange() {
+		return ({ selectedAnswerIds }: QuestionState) => this.onChange(selectedAnswerIds);
 	}
 
 	onChange = (_: any) => {};
