@@ -1,9 +1,8 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { getAnswerLabel } from '@shared/logic';
-import { Question, LabelType } from '@shared/types';
-import { QuestionState } from '../question/question.component';
+import { getAnswerLabel, multipleSelectQuestion } from '@shared/logic';
+import { Question, LabelType, QuestionState } from '@shared/types';
 
 @Component({
 	selector: 'single-response-question',
@@ -26,9 +25,7 @@ import { QuestionState } from '../question/question.component';
 		}
 	`],
 	template: `
-		<question
-			[question]="question"
-		>
+		<question [question]="question">
 			<ng-template let-context="context">
 				<div class="question-description">
 					<strong>{{question.description}}</strong>
@@ -47,15 +44,7 @@ import { QuestionState } from '../question/question.component';
 	`,
 })
 export class SingleResponseQuestionComponent implements ControlValueAccessor {
-	private _question: Question;
-	initialValue: any;
-
-	get question() {
-		return this._question;
-	}
-	@Input() set question(question: Question) {
-		this._question = question;
-	}
+	@Input() question: Question;
 
 	get onAnswerChange() {
 		return ({ selectedAnswerIds }: QuestionState) => this.onChange(selectedAnswerIds);

@@ -1,15 +1,6 @@
 import { Component, Input, ContentChild, TemplateRef } from '@angular/core';
 
-import { Question, Answer } from '@shared/types';
-
-export interface QuestionState {
-	selectedAnswerIds: number[];
-}
-
-export type QuestionStateReducer = (
-	state: QuestionState,
-	changes: QuestionState & { type: string }
-) => QuestionState & { type: string };
+import { Question, Answer, QuestionStateChange, QuestionState, QuestionStateReducer } from '@shared/types';
 
 @Component({
 	selector: 'question',
@@ -56,7 +47,7 @@ export class QuestionComponent {
 				return state;
 			} else {
 				return {
-					type: 'selectedAnswer',
+					type: QuestionStateChange.SelectAnswer,
 					selectedAnswerIds: [answer.answerId]
 				};
 			}
@@ -78,7 +69,7 @@ export class QuestionComponent {
 		const changesObject =
 			typeof changes === 'function' ? changes(currentState) : changes;
 		const { type, ...newState } = this.stateReducer(currentState, changesObject);
-		this.state = newState;
+		this.state = {...currentState, ...newState};
 		callback(this.state);
 	}
 }
