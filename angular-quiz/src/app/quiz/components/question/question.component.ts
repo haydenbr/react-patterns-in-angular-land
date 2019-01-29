@@ -41,39 +41,34 @@ export class QuestionComponent {
 		return this._question;
 	}
 
+	// why am I doing bind here? :)
 	get context() { // yo dawg ...
 		return {context: {
-			answerClick: this.answerClick,
-			isAnswerSelected: this.isAnswerSelected,
+			answerClick: this.answerClick.bind(this),
+			isAnswerSelected: this.isAnswerSelected.bind(this),
 			isQuestionComplete: this.isQuestionComplete,
 		}};
 	}
 
-	// Why is this a getter? :)
-	get answerClick() {
-		return (answer: Answer, callback = (_: any) => {}) => {
-			this.internalSetState((state: QuestionState) => {
-				if (this.isQuestionComplete) {
-					return state;
-				} else {
-					return {
-						type: 'selectedAnswer',
-						selectedAnswerIds: [answer.answerId]
-					};
-				}
-			}, callback);
-		};
+	answerClick(answer: Answer, callback = (_: any) => {}) {
+		this.internalSetState((state: QuestionState) => {
+			if (this.isQuestionComplete) {
+				return state;
+			} else {
+				return {
+					type: 'selectedAnswer',
+					selectedAnswerIds: [answer.answerId]
+				};
+			}
+		}, callback);
 	}
 
-	// and this? :)
-	get isAnswerSelected() {
-		return (answer: Answer) => {
-			const currentAnswers = this.state.selectedAnswerIds;
-			return currentAnswers.includes(answer.answerId);
-		};
+	isAnswerSelected(answer: Answer) {
+		const currentAnswers = this.state.selectedAnswerIds;
+		return currentAnswers.includes(answer.answerId);
 	}
 
-	// why isn't this in state?
+	// why isn't this in state? :)
 	get isQuestionComplete() {
 		return this.question && this.question.response !== undefined;
 	}
