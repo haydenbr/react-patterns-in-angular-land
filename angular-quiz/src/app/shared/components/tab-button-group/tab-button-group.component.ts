@@ -3,6 +3,7 @@ import { TimelineLite } from 'gsap';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { TabButtonGroupStateReducer, TabButtonGroupState } from '@shared/types';
 import { TabButtonComponent } from '../tab-button/tab-button.component';
 
 @Component({
@@ -15,8 +16,12 @@ import { TabButtonComponent } from '../tab-button/tab-button.component';
 export class TabButtonGroupComponent implements AfterViewInit, OnDestroy {
 	@ContentChildren(TabButtonComponent) private tabs = new QueryList<TabButtonComponent>();
 	@Input() onChange = (_: any) => {};
+	@Input() stateReducer: TabButtonGroupStateReducer = (state, changes) => changes;
 	private killSubscriptions = new Subject();
 	private _selectedTabValues: string[] = [];
+	private state: TabButtonGroupState = {
+		selectedTabValues: []
+	};
 
 	get selectedTabValues() {
 		return this._selectedTabValues;
@@ -32,6 +37,10 @@ export class TabButtonGroupComponent implements AfterViewInit, OnDestroy {
 	ngAfterViewInit() {
 		this.animateTabStyles();
 		this.initTabSelectSubsctiptions();
+	}
+
+	ngOnDestroy() {
+		this.killSubscriptions.next();
 	}
 
 	private initTabSelectSubsctiptions() {
@@ -58,7 +67,12 @@ export class TabButtonGroupComponent implements AfterViewInit, OnDestroy {
 		return timeline;
 	}
 
-	ngOnDestroy() {
-		this.killSubscriptions.next();
+	private internalSetState(changes: any, callback = (_: any) => {}) {
+		const currentState = this.state;
+		const changesObject =
+			typeof changes === 'function' ? changes(currentState) : changes;
+		const { type, ...newState } = this.stateReducer(currentState, changesObject);
+		this.state = {...currentState, ...newState};
+		callback(this.state);
 	}
 }

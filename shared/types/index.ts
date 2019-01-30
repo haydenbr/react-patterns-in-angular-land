@@ -8,3 +8,6 @@ export * from './question.interface';
 export * from './quiz-status.enum';
 export * from './quiz.interface';
 export * from './response.interface';
+export * from './tab-button-group-change.enum';
+export * from './tab-button-group-state-reducer.type';
+export * from './tab-button-group-state.interface';
