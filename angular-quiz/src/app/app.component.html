@@ -64,8 +64,8 @@
 		</tab-button>
 	</tab-button-group>
 
-	<div>
-		{{ tabsContent$ | async }}
+	<div *ngFor="let message of tabMessages$ | async">
+		{{message}}
 	</div>
 </div>
 

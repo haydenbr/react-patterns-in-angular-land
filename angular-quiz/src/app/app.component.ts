@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
 	formControl = new FormControl();
 	formGroup: FormGroup;
 	tabButtonsFormControl = new FormControl();
-	tabsContent$: Observable<string>;
+	tabMessages$: Observable<string[]>;
 
 	tabContents = [
 		{value: 1, text: 'Utopian Jellyfish', message: 'Never gonna give you up'},
@@ -41,11 +41,11 @@ export class AppComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.tabsContent$ = this.tabButtonsFormControl.valueChanges.pipe(
+		this.tabMessages$ = this.tabButtonsFormControl.valueChanges.pipe(
 			startWith(this.tabButtonsFormControl.value),
 			filter(x => !!x),
-			map(value => this.tabContents.find(t => t.value === value)),
-			map(tab => tab.message)
+			map(selectedTabs => selectedTabs.map(tabValue => this.tabContents.find(tab => tab.value === tabValue))),
+			map(tabs => tabs.map(tab => tab.message))
 		);
 
 		this.formControl.valueChanges.subscribe((value) => console.log('formControl', value));

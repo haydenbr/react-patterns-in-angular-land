@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnDestroy, ContentChildren, QueryList, forwar
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TimelineLite } from 'gsap';
 import { Subject } from 'rxjs';
-import { takeUntil, startWith } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { TabButtonComponent } from '../tab-button/tab-button.component';
 
@@ -25,11 +25,11 @@ export class TabButtonGroupComponent implements AfterViewInit, OnDestroy, Contro
 	onChange = (_: any) => {};
 	onTouched = () => {};
 	private killSubscriptions = new Subject();
-	private _value: string;
+	private _selectedTabValues: string[] = [];
 
 	writeValue(value: any) {
 		if (value) {
-			this.value = value;
+			this.selectedTabValues = value;
 		}
 	}
 	registerOnChange(onChange: any) {
@@ -39,15 +39,15 @@ export class TabButtonGroupComponent implements AfterViewInit, OnDestroy, Contro
 		this.onTouched = onTouched;
 	}
 
-	get value() {
-		return this._value;
+	get selectedTabValues() {
+		return this._selectedTabValues;
 	}
-	set value(value) {
-		this._value = value;
-		this.onChange(this._value);
+	set selectedTabValues(value) {
+		this._selectedTabValues = value;
+		this.onChange(this._selectedTabValues);
 	}
-	get selectedTab() {
-		return this.tabs.find((tab) => tab.value === this.value);
+	get selectedTabs() {
+		return this.selectedTabValues.map((value) => this.tabs.find((tab) => tab.value === value));
 	}
 
 	ngAfterViewInit() {
@@ -60,11 +60,7 @@ export class TabButtonGroupComponent implements AfterViewInit, OnDestroy, Contro
 			tab.tabSelect.pipe(
 				takeUntil(this.killSubscriptions)
 			).subscribe(() => {
-				if (tab.value === this.value) {
-					return;
-				}
-
-				this.value = tab.value;
+				this.selectedTabValues = [tab.value];
 				this.animateTabStyles();
 			})
 		);
@@ -74,8 +70,10 @@ export class TabButtonGroupComponent implements AfterViewInit, OnDestroy, Contro
 		let timeline = new TimelineLite()
 			.add(this.tabs.map((tab) => tab.animateDeselection()), 'start');
 
-		if (this.selectedTab) {
-			timeline = timeline.add(this.selectedTab.animateSelection(), 'start');
+		if (this.selectedTabs.length) {
+			this.selectedTabs.forEach((tab) => {
+				timeline = timeline.add(tab.animateSelection(), 'start');
+			});
 		}
 
 		return timeline;
