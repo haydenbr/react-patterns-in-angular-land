@@ -2,17 +2,17 @@ import { Quiz, QuestionType, LabelType, QuizStatus } from './types';
 
 export const demoQuiz: Quiz = {
 	quizId: 1,
-	description: 'boring demo ill make it exciting later',
+	description: 'Boring demo quiz',
 	title: 'Boring Demo Quiz',
 	showAnswers: true,
-	labelType: LabelType.Alpha,
+	labelType: LabelType.None,
 	status: QuizStatus.InProgress,
 	passingScore: 0.5,
 	questions: [
 		{
 			questionId: 1,
 			questionType: QuestionType.MultipleResponse,
-			description: 'this is a multiple response question',
+			description: 'This is a multiple response question',
 			answers: [
 				{
 					answerId: 1,

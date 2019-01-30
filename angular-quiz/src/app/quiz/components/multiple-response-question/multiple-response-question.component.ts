@@ -30,10 +30,17 @@ import { Question, LabelType, QuestionState } from '@shared/types';
 				<answer
 					*ngFor="let answer of question.answers; let i = index;"
 					[answer]="answer"
-					[disabled]="context.isQuestionComplete"
+					[isQuestionComplete]="context.isQuestionComplete"
 					[selected]="context.isAnswerSelected(answer)"
 					(click)="context.answerClick(answer, onAnswerChange)"
 				>
+					<ng-template let-context="context">
+						<answer-feedback
+							[correct]="context.selected && context.isCorrect"
+						>
+							{{getAnswerFeedback(context.selected, context.isCorrect)}}
+						</answer-feedback>
+					</ng-template>
 					<answer-label>{{getAnswerLabel(i)}}</answer-label>
 				</answer>
 			</ng-template>
@@ -42,6 +49,7 @@ import { Question, LabelType, QuestionState } from '@shared/types';
 })
 export class MultipleResponseQuestionComponent {
 	@Input() question: Question;
+	@Input() labelType: LabelType;
 	@Input() onChange = (_: any) => {};
 	stateReducer = multipleSelectQuestion;
 
@@ -50,6 +58,16 @@ export class MultipleResponseQuestionComponent {
 	}
 
 	getAnswerLabel(answerIndex: number) {
-		return getAnswerLabel({ answerIndex, labelType: LabelType.Alpha });
+		return getAnswerLabel({ answerIndex, labelType: this.labelType }) || 'X';
+	}
+
+	getAnswerFeedback(selected: boolean, isCorrect: boolean) {
+		if (selected && isCorrect) {
+			return 'This was one of the correct answers and you picked it!';
+		} else if (!selected && isCorrect) {
+			return 'This was one of the correct answers but you missed it.';
+		} else if (selected && !isCorrect) {
+			return 'You picked this answer but it\'s not one of the correct answers';
+		}
 	}
 }

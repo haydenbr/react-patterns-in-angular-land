@@ -1,4 +1,4 @@
-import { AnswerComponent, AnswerlabelComponent } from './answer';
+import { AnswerComponent, AnswerFeedbackComponent, AnswerLabelComponent } from './answer';
 import { MultipleResponseQuestionComponent } from './multiple-response-question/multiple-response-question.component';
 import { QuestionComponent } from './question/question.component';
 import { QuizComponent } from './quiz/quiz.component';
@@ -10,7 +10,8 @@ import { TrueFalseQuestionComponent } from './true-false-question/true-false-que
 
 export const COMPONENTS = [
 	AnswerComponent,
-	AnswerlabelComponent,
+	AnswerFeedbackComponent,
+	AnswerLabelComponent,
 	MultipleResponseQuestionComponent,
 	QuestionComponent,
 	QuizComponent,

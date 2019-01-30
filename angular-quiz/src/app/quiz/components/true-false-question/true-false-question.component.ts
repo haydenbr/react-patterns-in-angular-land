@@ -26,10 +26,15 @@ import { Question, QuestionState, Answer } from '@shared/types';
 				<answer
 					*ngFor="let answer of question.answers; let i = index;"
 					[answer]="answer"
-					[disabled]="context.isQuestionComplete"
+					[isQuestionComplete]="context.isQuestionComplete"
 					[selected]="context.isAnswerSelected(answer)"
 					(click)="context.answerClick(answer, onAnswerChange)"
 				>
+					<ng-template let-context="context">
+						<answer-feedback [correct]="context.isCorrect">
+							{{getAnswerFeedback(answer)}}
+						</answer-feedback>
+					</ng-template>
 					<answer-label>{{getAnswerLabel(answer)}}</answer-label>
 				</answer>
 			</ng-template>
@@ -49,6 +54,14 @@ export class TrueFalseQuestionComponent {
 			return 'True';
 		} else {
 			return 'False';
+		}
+	}
+
+	getAnswerFeedback(answer: Answer) {
+		if (answer.isCorrect) {
+			return `The statement is ${answer.isTrue ? 'True' : 'False'}`;
+		} else {
+			return 'You\'ve answered incorrectly';
 		}
 	}
 }

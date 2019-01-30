@@ -4,4 +4,4 @@ import { Component } from '@angular/core';
 	selector: 'answer-label',
 	template: `<ng-content></ng-content>`
 })
-export class AnswerlabelComponent {}
+export class AnswerLabelComponent {}

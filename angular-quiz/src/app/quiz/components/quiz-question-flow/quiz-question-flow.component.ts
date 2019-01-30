@@ -32,11 +32,13 @@ import { Quiz, QuestionType } from '@shared/types';
 						*ngSwitchCase="${QuestionType.SingleResponse}"
 						[question]="currentQuestion"
 						[onChange]="context.onChange"
+						[labelType]="labelType"
 					></single-response-question>
 					<multiple-response-question
 						*ngSwitchCase="${QuestionType.MultipleResponse}"
 						[question]="currentQuestion"
 						[onChange]="context.onChange"
+						[labelType]="labelType"
 					></multiple-response-question>
 					<true-false-question
 						*ngSwitchCase="${QuestionType.TrueFalse}"
@@ -122,6 +124,10 @@ export class QuizQuestionFlowComponent {
 	get canConfirmAnswer() {
 		let answers = this.selectedAnswers;
 		return answers && answers.length && answers.length > 0;
+	}
+
+	get labelType() {
+		return this.quiz.labelType;
 	}
 
 	get selectedAnswers() {
