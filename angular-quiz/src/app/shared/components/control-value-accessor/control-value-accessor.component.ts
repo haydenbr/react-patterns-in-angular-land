@@ -34,6 +34,9 @@ export class ControlValueAccessorComponent implements ControlValueAccessor {
 	}
 
 	get context() {
-		return { context: { onChange: this.onChange } };
+		return {context: {
+			onChange: this.onChange,
+			onTouched: this.onTouched
+		}};
 	}
 }

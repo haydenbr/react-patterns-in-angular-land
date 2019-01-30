@@ -23,6 +23,17 @@ export class AppComponent implements OnInit {
 		{value: 6, text: 'Billowy Banana', message: 'Never gonna tell a lie and hurt you'},
 	];
 
+	props = {
+		name: 'Hayden',
+		id: 8135010632,
+		message: 'Bob is cool',
+		config: {
+			color: 'red',
+			radius: '45',
+			fluxCapacitorReady: true
+		}
+	};
+
 	constructor(fb: FormBuilder) {
 		this.formGroup = fb.group({
 			formyMcFormface: ''
