@@ -55,14 +55,18 @@
 <h2>Compound Components</h2>
 
 <div class="tabs">
-	<tab-button-group [formControl]="tabButtonsFormControl">
-		<tab-button
-			*ngFor="let tab of tabContents"
-			[value]="tab.value"
-		>
-			{{tab.text}}
-		</tab-button>
-	</tab-button-group>
+	<control-value-accessor [formControl]="tabButtonsFormControl">
+		<ng-template let-context="context">
+			<tab-button-group [onChange]="context.onChange">
+				<tab-button
+					*ngFor="let tab of tabContents"
+					[value]="tab.value"
+				>
+					{{tab.text}}
+				</tab-button>
+			</tab-button-group>
+		</ng-template>
+	</control-value-accessor>
 
 	<div *ngFor="let message of tabMessages$ | async">
 		{{message}}
