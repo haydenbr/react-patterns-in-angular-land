@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
 	formControl = new FormControl();
 	formGroup: FormGroup;
 	tabButtonsFormControl = new FormControl();
+	multiSelectFormControl = new FormControl();
 	tabMessages$: Observable<string[]>;
 
 	tabContents = [

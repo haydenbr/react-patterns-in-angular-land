@@ -77,6 +77,23 @@
 
 <quiz></quiz>
 
+<h2>Compound Component with State Reducer</h2>
+
+<div class="tabs">
+	<!-- <control-value-accessor [formControl]="multiSelectFormControl">
+		<ng-template let-context="context"> -->
+			<tab-button-group-multi-select>
+				<tab-button
+					*ngFor="let tab of tabContents"
+					[value]="tab.value"
+				>
+					{{tab.text}}
+				</tab-button>
+			</tab-button-group-multi-select>
+		<!-- </ng-template>
+	</control-value-accessor> -->
+</div>
+
 <h2>Experiments</h2>
 
 <h3>ControlValueAccessor as a render prop</h3>

@@ -66,9 +66,8 @@ export class QuestionComponent {
 
 	private internalSetState(changes: any, callback = (_: any) => {}) {
 		const currentState = this.state;
-		const changesObject =
-			typeof changes === 'function' ? changes(currentState) : changes;
-		const { type, ...newState } = this.stateReducer(currentState, changesObject);
+		const changesResult = changes(currentState);
+		const { type, ...newState } = this.stateReducer(currentState, changesResult);
 		this.state = {...currentState, ...newState};
 		callback(this.state);
 	}

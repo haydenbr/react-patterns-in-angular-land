@@ -3,7 +3,7 @@ import { TimelineLite } from 'gsap';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { TabButtonGroupStateReducer, TabButtonGroupState } from '@shared/types';
+import { TabButtonGroupStateReducer, TabButtonGroupState, TabButtonGroupStateChange } from '@shared/types';
 import { TabButtonComponent } from '../tab-button/tab-button.component';
 
 @Component({
@@ -11,27 +11,19 @@ import { TabButtonComponent } from '../tab-button/tab-button.component';
 	styles: [`
 		:host { display: block; }
 	`],
-	template: `<ng-content select="tab-button"></ng-content>`,
+	template: `<ng-content select="tab-button, ng-content[select='tab-button']"></ng-content>`,
 })
 export class TabButtonGroupComponent implements AfterViewInit, OnDestroy {
 	@ContentChildren(TabButtonComponent) private tabs = new QueryList<TabButtonComponent>();
 	@Input() onChange = (_: any) => {};
 	@Input() stateReducer: TabButtonGroupStateReducer = (state, changes) => changes;
 	private killSubscriptions = new Subject();
-	private _selectedTabValues: string[] = [];
 	private state: TabButtonGroupState = {
 		selectedTabValues: []
 	};
 
-	get selectedTabValues() {
-		return this._selectedTabValues;
-	}
-	set selectedTabValues(value) {
-		this._selectedTabValues = value;
-		this.onChange(this._selectedTabValues);
-	}
 	get selectedTabs() {
-		return this.selectedTabValues.map((value) => this.tabs.find((tab) => tab.value === value));
+		return this.state.selectedTabValues.map((value) => this.tabs.find((tab) => tab.value === value));
 	}
 
 	ngAfterViewInit() {
@@ -48,7 +40,10 @@ export class TabButtonGroupComponent implements AfterViewInit, OnDestroy {
 			tab.tabSelect.pipe(
 				takeUntil(this.killSubscriptions)
 			).subscribe(() => {
-				this.selectedTabValues = [tab.value];
+				this.internalSetState(() => ({
+					type: TabButtonGroupStateChange.SelectTab,
+					selectedTabValues: [tab.value]
+				}))
 				this.animateTabStyles();
 			})
 		);
@@ -67,12 +62,11 @@ export class TabButtonGroupComponent implements AfterViewInit, OnDestroy {
 		return timeline;
 	}
 
-	private internalSetState(changes: any, callback = (_: any) => {}) {
+	private internalSetState(changes: any) {
 		const currentState = this.state;
-		const changesObject =
-			typeof changes === 'function' ? changes(currentState) : changes;
-		const { type, ...newState } = this.stateReducer(currentState, changesObject);
+		const changesResult = changes(currentState);
+		const { type, ...newState } = this.stateReducer(currentState, changesResult);
 		this.state = {...currentState, ...newState};
-		callback(this.state);
+		this.onChange(this.state.selectedTabValues);
 	}
 }
