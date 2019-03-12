@@ -1,3 +1,6 @@
+import { CarouselComponent } from './carousel/carousel.component';
+import { CarouselSlideComponent } from './carousel-slide/carousel-slide.component';
+import { CarouselSlideCaptionComponent } from './carousel-slide-caption/carousel-slide-caption.component';
 import { ControlValueAccessorComponent } from './control-value-accessor/control-value-accessor.component';
 import { DefinitionCardFaceComponent } from './definition-card/definition-card-face.component';
 import { DefinitionCardComponent } from './definition-card/definition-card.component';
@@ -11,6 +14,9 @@ import { TabButtonGroupComponent } from './tab-button-group/tab-button-group.com
 import { UsingPropsComponent } from './using-props/using-props.component';
 
 export const COMPONENTS = [
+	CarouselComponent,
+	CarouselSlideComponent,
+	CarouselSlideCaptionComponent,
 	ControlValueAccessorComponent,
 	DefinitionCardFaceComponent,
 	DefinitionCardComponent,

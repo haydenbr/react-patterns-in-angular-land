@@ -20,7 +20,8 @@
 		],
 		"paths": {
 			"@quiz/*": ["src/app/*"],
-			"@shared/*": ["../shared/*"]
+			"@shared/*": ["../shared/*"],
+			"@swiper": ["node_modules/swiper/dist/js/swiper.js"],
 		}
   }
 }

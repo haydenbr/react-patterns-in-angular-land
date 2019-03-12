@@ -1,0 +1,13 @@
+<swiper
+	[config]="config"
+	(slideChange)="onSlideChange()"
+>
+	<ng-content select="carousel-slide"></ng-content>
+</swiper>
+
+<div
+	class="slide-caption"
+	#slideCaptionOutlet
+>
+	<div *ngTemplateOutlet="captionTemplate"></div>
+</div>
